@@ -20,7 +20,7 @@ class Room():
 
         self.isCorridor = isCorridor
 
-        self.id = "notYetImplemented"
+        self.id = None
         self.adj = {}
 
     def collide(self, coord):

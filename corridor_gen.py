@@ -1,5 +1,5 @@
 from room import Room, TILE_UNIT
-from random import choice, randrange
+import random as rdm
 
 CORRIDOR_THICKNESS = 2
 
@@ -38,7 +38,7 @@ def corridor(node1, node2):
         raise ValueError('nodes are not adjacent')
 
 
-    couple = get_nearest_rooms(nodeA.room, nodeB.room, side, secondAxis)
+    couple = getNearestRooms(nodeA.room, nodeB.room, side, secondAxis)
     cor =  link(couple[0], couple[1])
     
     couple[0].addGraph(side[0], cor)
@@ -78,7 +78,7 @@ def corrX(X, Y, X2, Y2):
     if (Y2 - Y) == CORRIDOR_THICKNESS + 2:
         corrY = Y + 1
     else:
-        corrY = randrange(Y + 1, Y2 - CORRIDOR_THICKNESS - 1)
+        corrY = rdm.randrange(Y + 1, Y2 - CORRIDOR_THICKNESS - 1)
     corrY2 = corrY + CORRIDOR_THICKNESS
     return Room(corrX, corrY, corrX2, corrY2, True)
 
@@ -96,13 +96,13 @@ def corrY(X,Y,X2,Y2):
     if (X2 - X) == CORRIDOR_THICKNESS + 2:
         corrX = X + 1
     else:
-        corrX = randrange(X + 1, X2 - CORRIDOR_THICKNESS - 1)
+        corrX = rdm.randrange(X + 1, X2 - CORRIDOR_THICKNESS - 1)
     corrX2 = corrX + CORRIDOR_THICKNESS
     return Room(corrX, corrY, corrX2, corrY2, True)
 
 
 #generations of the couple
-def get_nearest_rooms(room_list1, room_list2, side, secondAxis):
+def getNearestRooms(room_list1, room_list2, side, secondAxis):
     couple = (None, None)
     shortest_dist = None
 

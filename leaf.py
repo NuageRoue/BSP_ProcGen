@@ -1,8 +1,7 @@
-from random import randrange, randint
+import random as rdm
 from corridor_gen import corridor, Room, TILE_UNIT
 
 MIN_LEAF_SIZE = 15
-CORRIDOR = 0
 
 class Leaf():
     """
@@ -18,7 +17,7 @@ class Leaf():
         self.x2 = width + x
         self.y2 = height + y
 
-        self.room = set() #a list that contains all the room that are in the zone of the leaf
+        self.room = list() #a list that contains all the room that are in the zone of the leaf
 
 
         self.leftChild = None
@@ -34,7 +33,7 @@ class Leaf():
         if self.leftChild is not None and self.rightChild is not None:
             return False
         
-        splitH = bool(randint(0,1)) #if True, then we split horizontally. else, we split vertically
+        splitH = bool(rdm.randint(0,1)) #if True, then we split horizontally. else, we split vertically
 
 
         #the axis of splitting is a 50% chance if one of the ratio is not superior to 1.25
@@ -51,7 +50,7 @@ class Leaf():
         if max <= MIN_LEAF_SIZE :
             return False
         
-        split = randrange(MIN_LEAF_SIZE, max)
+        split = rdm.randrange(MIN_LEAF_SIZE, max)
 
         if splitH:
             self.leftChild = Leaf(self.x, self.y, self.width, split)
@@ -64,33 +63,32 @@ class Leaf():
     def createRoom(self):
         if self.leftChild is not None and self.rightChild is not None:
             return False
-        roomWidth = randrange(int(0.5 * self.width), self.width - 4)
-        roomHeight = randrange(int(0.5 * self.height), self.height - 4)
+        roomWidth = rdm.randrange(int(0.5 * self.width), self.width - 4)
+        roomHeight = rdm.randrange(int(0.5 * self.height), self.height - 4)
 
-        roomX = randrange(1, self.width - roomWidth - 1) + self.x
-        roomY = randrange(1, self.height - roomHeight - 1) + self.y
+        roomX = rdm.randrange(1, self.width - roomWidth - 1) + self.x
+        roomY = rdm.randrange(1, self.height - roomHeight - 1) + self.y
         roomX2 = roomX + roomWidth
         roomY2 = roomY + roomHeight
 
-        self.room.add(Room(roomX, roomY, roomX2, roomY2, False))
+        self.room.append(Room(roomX, roomY, roomX2, roomY2, False))
         return True
     
     def getRoom(self):
-        if self.leftChild is not None and self.rightChild is not None:
-            self.room = self.room.union(self.leftChild.room.union(self.rightChild.room))
+        """if self.leftChild is not None and self.rightChild is not None:
+            #self.room = self.room.union(self.leftChild.room.union(self.rightChild.room))
         elif self.leftChild is None and self.rightChild is not None:
             self.room = self.room.union(self.rightChild.room)
         elif self.leftChild is not None and self.rightChild is None:
-            self.room = self.room.union(self.leftChild.room)
+            self.room = self.room.union(self.leftChild.room)"""
+        if self.leftChild is not None:
+            self.room.extend(room for room in self.leftChild.room if room not in self.room)
+        if self.rightChild is not None:
+            self.room.extend(room for room in self.rightChild.room if room not in self.room)
 
     def corridorGen(self):
-        global CORRIDOR
         if self.leftChild:
             self.leftChild.corridorGen()
         if self.rightChild:
-            self.rightChild.corridorGen()
-        if self.leftChild and self.rightChild:
-            CORRIDOR += 1
-            print(CORRIDOR)
-            
-            self.room.add(corridor(self.leftChild, self.rightChild))
+            self.rightChild.corridorGen()    
+            self.room.append(corridor(self.leftChild, self.rightChild))

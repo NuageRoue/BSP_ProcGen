@@ -1,0 +1,10 @@
+
+
+-Ajout d'un système d'id, qui permet la création de salles à thème; les salles auront des ids qui détermineront ce qu'est la salle : l'entrée, la sortie, salle de soin, salle des coffres... le tout dans l'objectif d'avoir un donjon plus fonctionnel.
+Certains critères determineront comment ces ids sont attribués (la taille de la salle, sa position...), en plus d'une part d'aléatoire. On peut imaginer avoir obligatoirement une salle spéciale dans le donjon en plus d'une entrée et d'une sortie (sortie qui pourrait être une salle de boss, tous les, admettons, 3 à 5 niveaux); Evidemment, il y aura tout de même une grosse part d'aléatoire, qui assurera une certaine forme de rejouabilité.
+A terme, cela permettra potentiellement d'avoir des salles d'une autre forme, même si le côté rétro apporté par les salles actuelles est plutôt appréciable. Finalement, tout dépendra de ma tilemap, qui devra permettre d'avoir des salles de ce type;
+
+
+-Implémentation d'un graphe d'adjacence : l'arbre ne sert qu'à la génération et n'est ensuite pas la structure la plus logique à manipuler.
+
+Avoir directement un graphe d'adjacence sera plus qu'utile pour la manipulation, plutôt que de se trainer l'arbre, qui devient inutile une fois la phase de génération finie
